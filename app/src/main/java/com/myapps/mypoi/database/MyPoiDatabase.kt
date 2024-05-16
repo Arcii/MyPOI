@@ -19,9 +19,7 @@ abstract class MyPoiDatabase: RoomDatabase() {
         private var INSTANCE: MyPoiDatabase? = null
 
         fun getDatabase(context: Context): MyPoiDatabase {
-            Log.d("MyPoiDatabase", "Getting database instance... {$context}")
             return INSTANCE ?: synchronized(this) {
-                Log.d("MyPoiDatabase", "Entered sinchronized block.")
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     MyPoiDatabase::class.java,
@@ -29,16 +27,13 @@ abstract class MyPoiDatabase: RoomDatabase() {
                 ).addCallback(object : RoomDatabase.Callback() {
                     override fun onCreate(db: SupportSQLiteDatabase) {
                         super.onCreate(db)
-                        Log.d("MyPoiDatabase", "Database created successfully.")
                         // Insert default categories
                         defaultCategories.forEach { category ->
                             db.execSQL("INSERT INTO categories (name) VALUES (?)", arrayOf(category.name))
                             Log.d("MyPoiDatabase", "Inserted category: ${category.name}")
                         }
-                        Log.d("MyPoiDatabase", "populated with default categories")
                     }
                 }).build()
-                Log.d("MyPoiDatabase", "build finished")
                 INSTANCE = instance
                 instance
             }

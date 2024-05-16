@@ -25,6 +25,9 @@ interface MyPoiDao {
     @Delete
     suspend fun deleteCategory(category: PoiCategory)
 
+    @Query("SELECT * FROM categories WHERE id = :categoryId")
+    suspend fun getCategoryById(categoryId: Int): PoiCategory?
+
     @Query("SELECT * FROM locations WHERE categoryId = :categoryId")
     fun getLocationsByCategoryId(categoryId: Int): Flow<List<PoiLocation>>
 

@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">MyPOI</string>
+    <string name="latitude_string">latitude</string>
+    <string name="longitude_string">longitude</string>
+    <string name="empty_string">\"\"</string>
+    <string name="add_location_descriptor">Add Location</string>
+    <string name="google_maps_package">com.google.android.apps.maps</string>
+    <string name="edit_descriptor">Edit</string>
+    <string name="delete_descriptor">Delete</string>
+    <string name="name_string">Name</string>
+    <string name="add_string">Add</string>
+    <string name="cancel_string" />
+    <string name="edit_location_string">Edit Location</string>
+    <string name="update_string">Update</string>
+    <string name="default_lat_lon">0.0</string>
+    <string name="poi_categories_title_string">POI Categories</string>
+    <string name="add_category_string">Add Category</string>
+    <string name="enter_category_name_string">Enter Category Name:</string>
+    <string name="edit_category_string">Edit Category</string>
+    <string name="edit_category_name_string">Edit category name:</string>
+    <string name="save_string">Save</string>
 </resources>

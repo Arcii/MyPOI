@@ -21,6 +21,10 @@ class MyPoiRepository (private val poiDao: MyPoiDao) {
         poiDao.deleteCategory(category)
     }
 
+    suspend fun getCategoryById(categoryId: Int): PoiCategory? {
+        return poiDao.getCategoryById(categoryId)
+    }
+
     fun getLocationsByCategoryId(categoryId: Int): Flow<List<PoiLocation>> {
         return poiDao.getLocationsByCategoryId(categoryId)
     }
