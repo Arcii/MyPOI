@@ -1,13 +1,13 @@
 package com.myapps.mypoi.database.repository
 
-import androidx.lifecycle.LiveData
 import com.myapps.mypoi.database.dao.MyPoiDao
 import com.myapps.mypoi.database.model.PoiCategory
 import com.myapps.mypoi.database.model.PoiLocation
+import kotlinx.coroutines.flow.Flow
 
 class MyPoiRepository (private val poiDao: MyPoiDao) {
 
-    val allCategories: LiveData<List<PoiCategory>> = poiDao.getAllCategories()
+    val allCategories: Flow<List<PoiCategory>> = poiDao.getAllCategories()
 
     suspend fun insertCategory(category: PoiCategory) {
         poiDao.insertCategory(category)
@@ -21,7 +21,7 @@ class MyPoiRepository (private val poiDao: MyPoiDao) {
         poiDao.deleteCategory(category)
     }
 
-    fun getLocationsByCategoryId(categoryId: Int): LiveData<List<PoiLocation>> {
+    fun getLocationsByCategoryId(categoryId: Int): Flow<List<PoiLocation>> {
         return poiDao.getLocationsByCategoryId(categoryId)
     }
 

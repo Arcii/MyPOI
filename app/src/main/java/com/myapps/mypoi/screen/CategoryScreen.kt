@@ -9,6 +9,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.myapps.mypoi.database.model.PoiCategory
@@ -17,7 +19,8 @@ import com.myapps.mypoi.viewmodel.MyPoiViewModel
 @Composable
 fun CategoryScreen(viewModel: MyPoiViewModel, navigateToLocationScreen: (String) -> Unit, contentPadding: PaddingValues) {
 
-    val categories = viewModel.allCategories.value ?: emptyList()
+    val categories by viewModel.allCategories.collectAsState(initial = emptyList())
+
     Surface (
         modifier = Modifier
             .padding(contentPadding)

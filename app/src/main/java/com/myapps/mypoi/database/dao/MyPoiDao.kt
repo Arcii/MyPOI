@@ -1,6 +1,5 @@
 package com.myapps.mypoi.database.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -9,12 +8,13 @@ import androidx.room.Query
 import androidx.room.Update
 import com.myapps.mypoi.database.model.PoiCategory
 import com.myapps.mypoi.database.model.PoiLocation
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MyPoiDao {
 
     @Query("SELECT * FROM categories")
-    fun getAllCategories(): LiveData<List<PoiCategory>>
+    fun getAllCategories(): Flow<List<PoiCategory>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCategory(category: PoiCategory)
@@ -26,7 +26,7 @@ interface MyPoiDao {
     suspend fun deleteCategory(category: PoiCategory)
 
     @Query("SELECT * FROM locations WHERE categoryId = :categoryId")
-    fun getLocationsByCategoryId(categoryId: Int): LiveData<List<PoiLocation>>
+    fun getLocationsByCategoryId(categoryId: Int): Flow<List<PoiLocation>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertLocation(location: PoiLocation)

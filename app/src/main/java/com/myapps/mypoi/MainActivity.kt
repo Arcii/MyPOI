@@ -11,26 +11,39 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.room.Room
 import com.myapps.mypoi.database.MyPoiDatabase
 import com.myapps.mypoi.database.repository.MyPoiRepository
+import com.myapps.mypoi.screen.AddLocationScreen
 import com.myapps.mypoi.screen.CategoryScreen
 import com.myapps.mypoi.screen.LocationScreen
 import com.myapps.mypoi.ui.theme.MyPOITheme
 import com.myapps.mypoi.viewmodel.MyPoiViewModel
 import com.myapps.mypoi.viewmodel.MyPoiViewModelFactory
-import androidx.compose.ui.Modifier
-import com.myapps.mypoi.screen.AddLocationScreen
 
 class MainActivity : ComponentActivity() {
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
         val myPoiDatabase = MyPoiDatabase.getDatabase(applicationContext)
+
+        /*val myPoiDatabase = Room.databaseBuilder(
+                applicationContext,
+                MyPoiDatabase::class.java,
+                "mypoidatabase.db"
+            ).build()*/
+
+
         val myPoiDao = myPoiDatabase.myPoiDao()
         val myPoiRepository = MyPoiRepository(myPoiDao)
 

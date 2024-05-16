@@ -8,8 +8,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.myapps.mypoi.database.model.PoiLocation
@@ -18,7 +18,8 @@ import com.myapps.mypoi.viewmodel.MyPoiViewModel
 @Composable
 fun LocationScreen(categoryId: String, viewModel: MyPoiViewModel, contentPadding: PaddingValues) {
 
-    val locations by viewModel.getLocationsByCategoryId(categoryId.toInt()).observeAsState(initial = emptyList())
+    val locations by viewModel.getLocationsByCategoryId(categoryId.toInt()).collectAsState(initial = emptyList())
+
     Surface (
         modifier = Modifier
             .padding(contentPadding)
@@ -33,7 +34,7 @@ fun LocationScreen(categoryId: String, viewModel: MyPoiViewModel, contentPadding
 }
 
 @Composable
-fun LocationItem(location: PoiLocation) {
+fun LocationItem(location: PoiLocation, modifier: Modifier = Modifier) {
     Text(text = location.name)
 }
 

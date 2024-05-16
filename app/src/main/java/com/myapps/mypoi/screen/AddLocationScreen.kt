@@ -14,6 +14,7 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -58,7 +59,7 @@ fun AddLocationScreen(
                 Text(text = longitude)
             }
 
-            val categories = viewModel.allCategories.value ?: emptyList()
+            val categories by viewModel.allCategories.collectAsState(initial = emptyList())
             var selectedCategoryId by remember { mutableStateOf(-1) }
             LazyColumn(
                 modifier = Modifier.padding(top = 16.dp)
