@@ -106,8 +106,8 @@ fun LocationScreen(
                             locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
                         }
                     },
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary
+                    containerColor = MaterialTheme.colorScheme.tertiary,
+                    contentColor = MaterialTheme.colorScheme.onTertiary
                 ) {
                     Icon(Icons.Default.Add, contentDescription = stringResource(id = R.string.add_location_descriptor))
                 }
@@ -115,7 +115,7 @@ fun LocationScreen(
             snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
         ) { innerPadding ->
             Surface(
-                color = MaterialTheme.colorScheme.background,
+                color = MaterialTheme.colorScheme.surfaceVariant,
                 modifier = Modifier
                     .padding(innerPadding)
                     .fillMaxSize()
@@ -197,7 +197,7 @@ fun LocationItem(
     onLocationClick: () -> Unit
 ) {
     Card(
-        backgroundColor = MaterialTheme.colorScheme.tertiary,
+        backgroundColor = MaterialTheme.colorScheme.secondary,
         modifier = Modifier
             .fillMaxWidth()
             .padding(5.dp)
@@ -215,7 +215,7 @@ fun LocationItem(
             ) {
                 Text(
                     text = location.name,
-                    color = MaterialTheme.colorScheme.onTertiary,
+                    color = MaterialTheme.colorScheme.onSecondary,
                     style = MaterialTheme.typography.bodyLarge
                 )
             }
@@ -223,14 +223,14 @@ fun LocationItem(
                 Icon(
                     imageVector = Icons.Default.Edit,
                     contentDescription = stringResource(id = R.string.edit_descriptor),
-                    tint = MaterialTheme.colorScheme.onTertiary
+                    tint = MaterialTheme.colorScheme.onSecondary
                 )
             }
             IconButton(onClick = onDeleteClick) {
                 Icon(
                     imageVector = Icons.Default.Delete,
                     contentDescription = stringResource(id = R.string.delete_descriptor),
-                    tint = MaterialTheme.colorScheme.onTertiary
+                    tint = MaterialTheme.colorScheme.onSecondary
                 )
             }
         }

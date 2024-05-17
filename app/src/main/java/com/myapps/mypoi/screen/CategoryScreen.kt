@@ -36,6 +36,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.myapps.mypoi.R
 import com.myapps.mypoi.database.model.PoiCategory
@@ -76,8 +77,8 @@ fun CategoryScreen(
             floatingActionButton = {
                 FloatingActionButton(
                     onClick = { showDialog = true },
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary
+                    containerColor = MaterialTheme.colorScheme.tertiary,
+                    contentColor = MaterialTheme.colorScheme.onTertiary
                 ) {
                     Icon(Icons.Default.Add, contentDescription = "Add")
                 }
@@ -85,7 +86,7 @@ fun CategoryScreen(
             snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
         ) { innerPadding ->
             Surface(
-                color = MaterialTheme.colorScheme.background,
+                color = MaterialTheme.colorScheme.surfaceVariant,
                 modifier = Modifier
                     .padding(innerPadding)
                     .fillMaxSize()
@@ -162,8 +163,8 @@ fun CategoryItem(
     onEditClick: () -> Unit
 ) {
     Card(
-        backgroundColor = MaterialTheme.colorScheme.tertiary,
-        contentColor = MaterialTheme.colorScheme.onTertiary,
+        backgroundColor = MaterialTheme.colorScheme.secondary,
+        contentColor = MaterialTheme.colorScheme.onSecondary,
         modifier = Modifier
             .fillMaxWidth()
             .padding(5.dp)
@@ -175,7 +176,7 @@ fun CategoryItem(
         ) {
             Text(
                 text = category.name,
-                color = MaterialTheme.colorScheme.onTertiary,
+                color = MaterialTheme.colorScheme.onSecondary,
                 style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier
                     .weight(1f)
@@ -185,14 +186,14 @@ fun CategoryItem(
                 Icon(
                     imageVector = Icons.Default.Edit,
                     contentDescription = stringResource(id = R.string.edit_descriptor),
-                    tint = MaterialTheme.colorScheme.onTertiary
+                    tint = MaterialTheme.colorScheme.onSecondary
                 )
             }
             IconButton(onClick = onDeleteClick) {
                 Icon(
                     imageVector = Icons.Default.Delete,
                     contentDescription = stringResource(id = R.string.delete_descriptor),
-                    tint = MaterialTheme.colorScheme.onTertiary
+                    tint = MaterialTheme.colorScheme.onSecondary
                 )
             }
         }
@@ -247,4 +248,59 @@ fun CategoryDialog(
             }
         }
     )
+}
+
+@Preview
+@Composable
+fun CategoryScreenPreview(){
+    val categories = listOf(
+        PoiCategory(0,"Category 1"),
+        PoiCategory(0,"Category 1"),
+        PoiCategory(0,"Category 1"),
+        PoiCategory(0,"Category 1"),
+        PoiCategory(0,"Category 1"),
+        PoiCategory(0,"Category 1"),
+        PoiCategory(0,"Category 1"),
+        PoiCategory(0,"Category 1"),
+        PoiCategory(0,"Category 1"),
+        PoiCategory(0,"Category 1"),
+        PoiCategory(0,"Category 1"),
+        PoiCategory(0,"Category 1"),
+        PoiCategory(0,"Category 1")
+    )
+    MyPOITheme {
+        Scaffold(
+            topBar = { MyPoiTopBar() },
+            bottomBar = { MyPoiBottomBar(stringResource(id = R.string.poi_categories_title_string)) },
+            floatingActionButton = {
+                FloatingActionButton(
+                    onClick = { },
+                    containerColor = MaterialTheme.colorScheme.tertiary,
+                    contentColor = MaterialTheme.colorScheme.onTertiary
+                ) {
+                    Icon(Icons.Default.Add, contentDescription = "Add")
+                }
+            }
+        ) { innerPadding ->
+            Surface(
+                color = MaterialTheme.colorScheme.surfaceVariant,
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize()
+            ) {
+                LazyColumn(
+                    modifier = Modifier.padding(bottom = 80.dp)
+                ) {
+                    items(categories) { category ->
+                        CategoryItem(
+                            category = category,
+                            onItemClick = {},
+                            onDeleteClick = {},
+                            onEditClick = {}
+                        )
+                    }
+                }
+            }
+        }
+    }
 }
