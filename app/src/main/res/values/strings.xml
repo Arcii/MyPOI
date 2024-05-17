@@ -22,4 +22,10 @@
     <string name="category_string">Category</string>
     <string name="cap_latitude_string">Latitude</string>
     <string name="cap_longitude_string">Longitude</string>
+    <string name="category_added_successfully">Category added successfully</string>
+    <string name="category_edited_successfully">Category edited successfully</string>
+    <string name="location_added_successfully">Location added successfully</string>
+    <string name="location_edited_successfully">Location edited successfully</string>
+    <string name="category_removed_successfully">Category deleted</string>
+    <string name="location_removed_successfully">Location deleted</string>
 </resources>

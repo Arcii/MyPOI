@@ -29,10 +29,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
@@ -60,6 +63,7 @@ fun LocationScreen(
     viewModel: MyPoiViewModel,
     locationPermissionLauncher: ActivityResultLauncher<String>,
     context: Context,
+    navigateToCategoriesScreen: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val locations by viewModel.getLocationsByCategoryId(categoryId.toInt()).collectAsState(initial = emptyList())
@@ -71,11 +75,24 @@ fun LocationScreen(
     var longitude by remember { mutableDoubleStateOf(0.0) }
     val googleMapsPackageName = stringResource(id = R.string.google_maps_package)
     val defaultLatLon = stringResource(id = R.string.default_lat_lon).toDouble()
+    var snackbarMessage by remember { mutableStateOf<String?>(null) }
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    val successfulInsertion: String = stringResource(id = R.string.location_added_successfully)
+    val successfulEdit:String = stringResource(id = R.string.location_edited_successfully)
+    val successfulDelete:String = stringResource(id = R.string.location_removed_successfully)
+
+    LaunchedEffect(snackbarMessage) {
+        snackbarMessage?.let {
+            snackbarHostState.showSnackbar(it)
+            snackbarMessage = null
+        }
+    }
 
     MyPOITheme {
         Scaffold(
-            topBar = { MyPoiTopBar(categoryName ?: "") },
-            bottomBar = { MyPoiBottomBar() },
+            topBar = { MyPoiTopBar() },
+            bottomBar = { MyPoiBottomBar(categoryName ?: "", backNavigation = navigateToCategoriesScreen) },
             floatingActionButton = {
                 FloatingActionButton(
                     onClick = {
@@ -94,7 +111,8 @@ fun LocationScreen(
                 ) {
                     Icon(Icons.Default.Add, contentDescription = stringResource(id = R.string.add_location_descriptor))
                 }
-            }
+            },
+            snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
         ) { innerPadding ->
             Surface(
                 color = MaterialTheme.colorScheme.background,
@@ -102,7 +120,9 @@ fun LocationScreen(
                     .padding(innerPadding)
                     .fillMaxSize()
             ) {
-                LazyColumn {
+                LazyColumn (
+                    modifier = Modifier.padding(bottom = 80.dp)
+                ){
                     items(locations) { location ->
                         LocationItem(
                             location = location,
@@ -110,7 +130,10 @@ fun LocationScreen(
                                 selectedLocation = location
                                 showEditDialog = true
                             },
-                            onDeleteClick = { viewModel.deleteLocation(location) },
+                            onDeleteClick = {
+                                viewModel.deleteLocation(location)
+                                snackbarMessage = successfulDelete
+                            },
                             onLocationClick = {
                                 val gmmIntentUri = Uri.parse("geo:${location.latitude},${location.longitude}?q=${location.latitude},${location.longitude}(${Uri.encode(location.name)})")
                                 val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
@@ -138,6 +161,7 @@ fun LocationScreen(
                             )
                         )
                         showAddDialog = false
+                        snackbarMessage = successfulInsertion
                     }
                 )
             }
@@ -155,6 +179,7 @@ fun LocationScreen(
                                 )
                             )
                             showEditDialog = false
+                            snackbarMessage = successfulEdit
                         }
                     )
                 }

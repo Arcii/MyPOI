@@ -21,10 +21,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -52,11 +55,24 @@ fun CategoryScreen(
     var categoryName by remember { mutableStateOf("") }
     var showEditDialog by remember { mutableStateOf(false) }
     var categoryToEdit by remember { mutableStateOf<PoiCategory?>(null) }
+    var snackbarMessage by remember { mutableStateOf<String?>(null) }
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    val successfulInsertion: String = stringResource(id = R.string.category_added_successfully)
+    val successfulEdit:String = stringResource(id = R.string.category_edited_successfully)
+    val successfulDelete:String = stringResource(id = R.string.category_removed_successfully)
+
+    LaunchedEffect(snackbarMessage) {
+        snackbarMessage?.let {
+            snackbarHostState.showSnackbar(it)
+            snackbarMessage = null
+        }
+    }
 
     MyPOITheme {
         Scaffold(
-            topBar =  { MyPoiTopBar(stringResource(id = R.string.poi_categories_title_string)) },
-            bottomBar = { MyPoiBottomBar() },
+            topBar = { MyPoiTopBar() },
+            bottomBar = { MyPoiBottomBar(stringResource(id = R.string.poi_categories_title_string)) },
             floatingActionButton = {
                 FloatingActionButton(
                     onClick = { showDialog = true },
@@ -65,7 +81,8 @@ fun CategoryScreen(
                 ) {
                     Icon(Icons.Default.Add, contentDescription = "Add")
                 }
-            }
+            },
+            snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
         ) { innerPadding ->
             Surface(
                 color = MaterialTheme.colorScheme.background,
@@ -73,12 +90,17 @@ fun CategoryScreen(
                     .padding(innerPadding)
                     .fillMaxSize()
             ) {
-                LazyColumn {
+                LazyColumn (
+                    modifier = Modifier.padding(bottom = 80.dp)
+                ){
                     items(categories) { category ->
                         CategoryItem(
                             category = category,
                             onItemClick = { navigateToLocationScreen(category.id.toString()) },
-                            onDeleteClick = { viewModel.deleteCategory(category) },
+                            onDeleteClick = {
+                                viewModel.deleteCategory(category)
+                                snackbarMessage = successfulDelete
+                            },
                             onEditClick = {
                                 categoryToEdit = category
                                 categoryName = category.name
@@ -93,13 +115,14 @@ fun CategoryScreen(
                 CategoryDialog(
                     title = stringResource(id = R.string.add_category_string),
                     confirmButtonText = stringResource(id = R.string.add_string),
-                    categoryName = "",
+                    categoryName = categoryName,
                     onCategoryNameChange = { categoryName = it },
                     onConfirm = {
                         if (categoryName.isNotBlank()) {
                             viewModel.insertCategory(PoiCategory(name = categoryName))
                             categoryName = ""
                             showDialog = false
+                            snackbarMessage = successfulInsertion
                         }
                     },
                     onDismiss = { showDialog = false }
@@ -118,6 +141,7 @@ fun CategoryScreen(
                                 viewModel.updateCategory(it.copy(name = categoryName))
                                 categoryName = ""
                                 showEditDialog = false
+                                snackbarMessage = successfulEdit
                             }
                         }
                     },
@@ -127,6 +151,7 @@ fun CategoryScreen(
         }
     }
 }
+
 
 @Composable
 fun CategoryItem(

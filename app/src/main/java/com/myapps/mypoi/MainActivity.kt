@@ -60,7 +60,10 @@ class MainActivity : ComponentActivity() {
                             categoryId = categoryId ?: "",
                             viewModel = myPoiViewModel,
                             locationPermissionLauncher = locationPermissionLauncher,
-                            context = LocalContext.current
+                            context = LocalContext.current,
+                            navigateToCategoriesScreen = {
+                                navController.navigate("categoryscreen")
+                            }
                         )
                     }
                 }
