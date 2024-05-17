@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    kotlin("kapt")
+    id("com.google.devtools.ksp") version "1.9.0-1.0.12" // Add this line
 }
 
 android {
@@ -74,22 +74,21 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.0")
+    implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation("androidx.compose.ui:ui:1.6.7")
     implementation("androidx.compose.material:material:1.6.7")
     implementation("androidx.compose.ui:ui-tooling-preview:1.6.7")
-    implementation("androidx.activity:activity-compose:1.9.0")
+    implementation(libs.androidx.activity.compose)
     implementation("com.google.accompanist:accompanist-permissions:0.30.1")
     implementation("com.google.maps.android:maps-compose:2.1.0")
 
-    //Room
+    // Room with KSP
     implementation("androidx.room:room-runtime:2.6.1")
-    kapt("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
+    ksp("androidx.room:room-compiler:2.6.1") // Replace kapt with ksp
 
     implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation("androidx.navigation:navigation-compose:2.7.7")
 
-    implementation ("androidx.compose.ui:ui-text-google-fonts:1.6.7")
-
+    implementation("androidx.compose.ui:ui-text-google-fonts:1.6.7")
 }

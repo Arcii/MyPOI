@@ -30,7 +30,6 @@ abstract class MyPoiDatabase: RoomDatabase() {
                         // Insert default categories
                         defaultCategories.forEach { category ->
                             db.execSQL("INSERT INTO categories (name) VALUES (?)", arrayOf(category.name))
-                            Log.d("MyPoiDatabase", "Inserted category: ${category.name}")
                         }
                     }
                 }).build()
@@ -44,7 +43,19 @@ abstract class MyPoiDatabase: RoomDatabase() {
 
 val defaultCategories = listOf(
     PoiCategory(name = "Parking"),
-    PoiCategory(name = "Point Of Interest"),
-    PoiCategory(name = "Restaurant"),
-    PoiCategory(name = "Shop")
+    PoiCategory(name = "Restaurants and Dining"),
+    PoiCategory(name = "Shopping and Retail"),
+    PoiCategory(name = "Entertainment and Leisure"),
+    PoiCategory(name = "Parks and Recreation"),
+    PoiCategory(name = "Healthcare"),
+    PoiCategory(name = "Education"),
+    PoiCategory(name = "Financial Services"),
+    PoiCategory(name = "Transportation"),
+    PoiCategory(name = "Accommodation"),
+    PoiCategory(name = "Religious Sites"),
+    PoiCategory(name = "Government and Public Services"),
+    PoiCategory(name = "Utilities and Service Providers"),
+    PoiCategory(name = "Tourist Attractions"),
+    PoiCategory(name = "Sports and Fitness"),
+    PoiCategory(name = "Nightlife")
 )

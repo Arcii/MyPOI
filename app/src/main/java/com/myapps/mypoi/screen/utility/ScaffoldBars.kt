@@ -2,9 +2,11 @@ package com.myapps.mypoi.screen.utility
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Surface
 import androidx.compose.material.TopAppBar
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,11 +40,9 @@ fun MyPoiTopBar(screen: String, modifier: Modifier = Modifier) {
 
 @Composable
 fun MyPoiBottomBar(modifier: Modifier = Modifier) {
-    Surface(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.primary)
-    ) {
-        // Add any bottom bar content here
+    BottomAppBar (
+        containerColor = MaterialTheme.colorScheme.primary
+    ){
+        //Empty BottomBar
     }
 }

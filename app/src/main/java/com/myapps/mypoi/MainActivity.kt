@@ -1,6 +1,7 @@
 package com.myapps.mypoi
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
@@ -33,9 +34,9 @@ class MainActivity : ComponentActivity() {
             ActivityResultContracts.RequestPermission()
         ) { isGranted ->
             if (isGranted) {
-                // Permission granted
+                Log.d("Permission", "Permission Granted")
             } else {
-                // Permission denied
+                Log.d("Permission", "Permission Denied")
             }
         }
 
