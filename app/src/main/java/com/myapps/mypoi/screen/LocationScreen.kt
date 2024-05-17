@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.activity.result.ActivityResultLauncher
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,21 +16,22 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.Button
 import androidx.compose.material.Card
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -42,7 +42,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -74,57 +73,51 @@ fun LocationScreen(
 
     MyPOITheme {
         Scaffold(
-            topBar = { MyPoiTopBar() },
+            topBar = { MyPoiTopBar(categoryName ?: "") },
             bottomBar = { MyPoiBottomBar() },
             floatingActionButton = {
-                FloatingActionButton(onClick = {
-                    if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                        getCurrentLocation(context, defaultLatLon) { receivedLatitude, receivedLongitude ->
-                            latitude = receivedLatitude
-                            longitude = receivedLongitude
-                            showAddDialog = true
+                FloatingActionButton(
+                    onClick = {
+                        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                            getCurrentLocation(context, defaultLatLon) { receivedLatitude, receivedLongitude ->
+                                latitude = receivedLatitude
+                                longitude = receivedLongitude
+                                showAddDialog = true
+                            }
+                        } else {
+                            locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
                         }
-                    } else {
-                        locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-                    }
-                }) {
+                    },
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
+                ) {
                     Icon(Icons.Default.Add, contentDescription = stringResource(id = R.string.add_location_descriptor))
                 }
             }
         ) { innerPadding ->
             Surface(
+                color = MaterialTheme.colorScheme.background,
                 modifier = Modifier
                     .padding(innerPadding)
                     .fillMaxSize()
             ) {
-                Column {
-                    Text(
-                        text = "$categoryName",
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onSecondary,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(MaterialTheme.colorScheme.secondary)
-                    )
-                    LazyColumn {
-                        items(locations) { location ->
-                            LocationItem(
-                                location = location,
-                                onEditClick = {
-                                    selectedLocation = location
-                                    showEditDialog = true
-                                },
-                                onDeleteClick = { viewModel.deleteLocation(location) },
-                                onLocationClick = {
-                                    val gmmIntentUri = Uri.parse("geo:${location.latitude},${location.longitude}?q=${location.latitude},${location.longitude}(${Uri.encode(location.name)})")
-                                    val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-                                    mapIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                    mapIntent.setPackage(googleMapsPackageName)
-                                    context.startActivity(mapIntent)
-                                }
-                            )
-                        }
+                LazyColumn {
+                    items(locations) { location ->
+                        LocationItem(
+                            location = location,
+                            onEditClick = {
+                                selectedLocation = location
+                                showEditDialog = true
+                            },
+                            onDeleteClick = { viewModel.deleteLocation(location) },
+                            onLocationClick = {
+                                val gmmIntentUri = Uri.parse("geo:${location.latitude},${location.longitude}?q=${location.latitude},${location.longitude}(${Uri.encode(location.name)})")
+                                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                                mapIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                mapIntent.setPackage(googleMapsPackageName)
+                                context.startActivity(mapIntent)
+                            }
+                        )
                     }
                 }
             }
@@ -196,14 +189,23 @@ fun LocationItem(
             ) {
                 Text(
                     text = location.name,
-                    color = MaterialTheme.colorScheme.onTertiary
+                    color = MaterialTheme.colorScheme.onTertiary,
+                    style = MaterialTheme.typography.bodyLarge
                 )
             }
             IconButton(onClick = onEditClick) {
-                Icon(imageVector = Icons.Default.Edit, contentDescription = stringResource(id = R.string.edit_descriptor))
+                Icon(
+                    imageVector = Icons.Default.Edit,
+                    contentDescription = stringResource(id = R.string.edit_descriptor),
+                    tint = MaterialTheme.colorScheme.onTertiary
+                )
             }
             IconButton(onClick = onDeleteClick) {
-                Icon(imageVector = Icons.Default.Delete, contentDescription = stringResource(id = R.string.delete_descriptor))
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = stringResource(id = R.string.delete_descriptor),
+                    tint = MaterialTheme.colorScheme.onTertiary
+                )
             }
         }
     }
@@ -229,8 +231,14 @@ fun AddLocationDialog(
                     onValueChange = { name = it },
                     label = { Text(stringResource(id = R.string.name_string)) }
                 )
-                Text(text = latitude.toString())
-                Text(text = longitude.toString())
+                Row {
+                    Text(text = "${stringResource(id = R.string.cap_latitude_string)} : ")
+                    Text(text = latitude.toString())
+                }
+                Row {
+                    Text(text = "${stringResource(id = R.string.cap_longitude_string)} : ")
+                    Text(text = longitude.toString())
+                }
             }
         },
         confirmButton = {
@@ -238,14 +246,22 @@ fun AddLocationDialog(
                 enabled = name.isNotBlank(),
                 onClick = {
                     onConfirm(name, latitude, longitude)
-                }
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
+                )
             ) {
                 Text(stringResource(id = R.string.add_string))
             }
         },
         dismissButton = {
             Button(
-                onClick = { onDismiss() }
+                onClick = { onDismiss() },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
+                )
             ) {
                 Text(stringResource(id = R.string.cancel_string))
             }
@@ -277,13 +293,13 @@ fun EditLocationDialog(
                 TextField(
                     value = latitude,
                     onValueChange = { latitude = it },
-                    label = { Text(stringResource(id = R.string.latitude_string)) },
+                    label = { Text(stringResource(id = R.string.cap_latitude_string)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
                 TextField(
                     value = longitude,
                     onValueChange = { longitude = it },
-                    label = { Text(stringResource(id = R.string.longitude_string)) },
+                    label = { Text(stringResource(id = R.string.cap_longitude_string)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
             }
@@ -293,14 +309,22 @@ fun EditLocationDialog(
                 enabled = name.isNotBlank(),
                 onClick = {
                     onConfirm(name, latitude.toDouble(), longitude.toDouble())
-                }
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
+                )
             ) {
                 Text(stringResource(id = R.string.update_string))
             }
         },
         dismissButton = {
             Button(
-                onClick = { onDismiss() }
+                onClick = { onDismiss() },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
+                )
             ) {
                 Text(stringResource(id = R.string.cancel_string))
             }

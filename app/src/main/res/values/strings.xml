@@ -9,7 +9,7 @@
     <string name="delete_descriptor">Delete</string>
     <string name="name_string">Name</string>
     <string name="add_string">Add</string>
-    <string name="cancel_string" />
+    <string name="cancel_string">Cancel</string> />
     <string name="edit_location_string">Edit Location</string>
     <string name="update_string">Update</string>
     <string name="default_lat_lon">0.0</string>
@@ -19,4 +19,7 @@
     <string name="edit_category_string">Edit Category</string>
     <string name="edit_category_name_string">Edit category name:</string>
     <string name="save_string">Save</string>
+    <string name="category_string">Category</string>
+    <string name="cap_latitude_string">Latitude</string>
+    <string name="cap_longitude_string">Longitude</string>
 </resources>
