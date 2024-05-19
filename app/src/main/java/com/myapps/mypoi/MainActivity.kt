@@ -1,5 +1,6 @@
 package com.myapps.mypoi
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -26,19 +27,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val myPoiDatabase = MyPoiDatabase.getDatabase(applicationContext)
-        val myPoiDao = myPoiDatabase.myPoiDao()
-        val myPoiRepository = MyPoiRepository(myPoiDao)
+        //Setup Room Database, DAO and Repository
+        val myPoiRepository = initializeRoomDataLayer(applicationContext)
 
-        locationPermissionLauncher = registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted ->
-            if (isGranted) {
-                Log.d("Permission", "Permission Granted")
-            } else {
-                Log.d("Permission", "Permission Denied")
-            }
-        }
+        //Initialize permission launcher
+        initializePermissionLauncher()
 
         setContent {
             val navController = rememberNavController()
@@ -70,4 +63,26 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    private fun initializeRoomDataLayer(applicationContext: Context): MyPoiRepository{
+        val myPoiDatabase = MyPoiDatabase.getDatabase(applicationContext)
+        val myPoiDao = myPoiDatabase.myPoiDao()
+        return MyPoiRepository(myPoiDao)
+    }
+
+    private fun initializePermissionLauncher() {
+        locationPermissionLauncher = registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted ->
+            if (isGranted) {
+                Log.d("Permission", "Permission Granted")
+            } else {
+                Log.d("Permission", "Permission Denied")
+            }
+        }
+    }
+
 }
+
+
+

@@ -1,9 +1,9 @@
 package com.myapps.mypoi.screen.utility
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.IconButton
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -22,10 +22,12 @@ import androidx.compose.ui.unit.sp
 import com.myapps.mypoi.R
 
 @Composable
-fun MyPoiTopBar(modifier: Modifier = Modifier) {
+fun MyPoiTopBar(
+    modifier: Modifier = Modifier
+) {
     TopAppBar(
         title = {
-            Column(
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp)
@@ -44,7 +46,11 @@ fun MyPoiTopBar(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun MyPoiBottomBar(screen: String, backNavigation: () -> Unit = {}, modifier: Modifier = Modifier) {
+fun MyPoiBottomBar(
+    screen: String,
+    modifier: Modifier = Modifier,
+    backNavigation: () -> Unit = {}
+) {
     BottomAppBar (
         containerColor = MaterialTheme.colorScheme.primary
     ){
@@ -71,9 +77,10 @@ fun MyPoiBottomBar(screen: String, backNavigation: () -> Unit = {}, modifier: Mo
 fun BackButton(
     onClick: () -> Unit,
     icon: ImageVector,
-    contentDescription: String
+    contentDescription: String,
+    modifier: Modifier = Modifier
 ) {
-    androidx.compose.material.IconButton(
+    IconButton(
         onClick = onClick,
         modifier = Modifier.padding(start = 10.dp)
     ) {

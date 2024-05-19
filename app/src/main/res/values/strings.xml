@@ -28,4 +28,23 @@
     <string name="location_edited_successfully">Location edited successfully</string>
     <string name="category_removed_successfully">Category deleted</string>
     <string name="location_removed_successfully">Location deleted</string>
+    <string name="poi_location_test_string_preview">Locations</string>
+    <string name="my_poi_icon_descriptor">MyPOI Icon</string>
+    <string name="my_poi_db_name">my_poi_database</string>
+    <string name="my_poi_db_category_parking">Parking</string>
+    <string name="my_poi_db_category_restaurants">Restaurants and Dining</string>
+    <string name="my_poi_db_category_shop">Shopping and Retail</string>
+    <string name="my_poi_db_category_entertainment">Entertainment and Leisure</string>
+    <string name="my_poi_db_category_parks">Parks and Recreation</string>
+    <string name="my_poi_db_category_healthcare">Healthcare</string>
+    <string name="my_poi_db_category_education">Education</string>
+    <string name="my_poi_db_category_financial">Financial Services</string>
+    <string name="my_poi_db_category_transportation">Transportation</string>
+    <string name="my_poi_db_category_accommodation">Accommodation</string>
+    <string name="my_poi_db_category_religious_sites">Religious Sites</string>
+    <string name="my_poi_db_category_public_services">Government and Public Services</string>
+    <string name="my_poi_db_category_utilities">Utilities and Service Providers</string>
+    <string name="my_poi_db_category_tourist_attractions">Tourist Attractions</string>
+    <string name="my_poi_db_category_sports_fitness">Sports and Fitness</string>
+    <string name="my_poi_db_category_nightlife">Nightlife</string>
 </resources>

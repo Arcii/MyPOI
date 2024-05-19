@@ -46,6 +46,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -145,6 +146,7 @@ fun LocationScreen(
                     }
                 }
             }
+
             if (showAddDialog) {
                 AddLocationDialog(
                     latitude = latitude,
@@ -205,7 +207,9 @@ fun LocationItem(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.padding(8.dp)
+            modifier = Modifier
+                .padding(8.dp)
+                .fillMaxWidth()
         ) {
             Column(
                 modifier = Modifier
@@ -374,5 +378,69 @@ private fun getCurrentLocation(context: Context, defaultLatLon: Double, onLocati
             }
     } else {
         onLocationReceived(defaultLatLon, defaultLatLon)
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun LocationScreenPreview(modifier: Modifier = Modifier){
+
+    val locations = listOf(
+        PoiLocation(0,"Location 1", 123.22, 143.21, 0),
+        PoiLocation(0,"Location 2", 123.22, 143.21, 0),
+        PoiLocation(0,"Location 3", 123.22, 143.21, 0),
+        PoiLocation(0,"Location 4", 123.22, 143.21, 0),
+        PoiLocation(0,"Location 5", 123.22, 143.21, 0),
+        PoiLocation(0,"Location 6", 123.22, 143.21, 0),
+        PoiLocation(0,"Location 7", 123.22, 143.21, 0),
+        PoiLocation(0,"Location 8", 123.22, 143.21, 0),
+        PoiLocation(0,"Location 9", 123.22, 143.21, 0),
+        PoiLocation(0,"Location 10", 123.22, 143.21, 0),
+        PoiLocation(0,"Location 11", 123.22, 143.21, 0),
+        PoiLocation(0,"Location 12", 123.22, 143.21, 0),
+        PoiLocation(0,"Location 13", 123.22, 143.21, 0),
+        PoiLocation(0,"Location 14", 123.22, 143.21, 0),
+        PoiLocation(0,"Location 15", 123.22, 143.21, 0),
+        PoiLocation(0,"Location 16", 123.22, 143.21, 0),
+    )
+
+    MyPOITheme (darkTheme = false){
+        Scaffold(
+            topBar = { MyPoiTopBar() },
+            bottomBar = { MyPoiBottomBar(stringResource(id = R.string.poi_location_test_string_preview)) },
+            floatingActionButton = {
+                FloatingActionButton(
+                    onClick = {},
+                    containerColor = MaterialTheme.colorScheme.tertiary,
+                    contentColor = MaterialTheme.colorScheme.onTertiary
+                ) {
+                    Icon(
+                        Icons.Default.Add,
+                        contentDescription = stringResource(id = R.string.add_location_descriptor)
+                    )
+                }
+            },
+            snackbarHost = {}
+        ) { innerPadding ->
+            Surface(
+                color = MaterialTheme.colorScheme.surfaceVariant,
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize()
+            ) {
+                LazyColumn(
+                    modifier = Modifier.padding(bottom = 80.dp)
+                ) {
+                    items(locations) { location ->
+                        LocationItem(
+                            location = location,
+                            onEditClick = {},
+                            onDeleteClick = {},
+                            onLocationClick = {}
+                        )
+                    }
+                }
+            }
+        }
     }
 }

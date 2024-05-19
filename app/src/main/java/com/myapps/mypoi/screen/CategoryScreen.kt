@@ -1,6 +1,7 @@
 package com.myapps.mypoi.screen
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -172,7 +173,10 @@ fun CategoryItem(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .padding(8.dp)
+                .fillMaxWidth()
         ) {
             Text(
                 text = category.name,
@@ -252,7 +256,7 @@ fun CategoryDialog(
 
 @Preview
 @Composable
-fun CategoryScreenPreview(){
+fun CategoryScreenPreview(modifier: Modifier = Modifier){
     val categories = listOf(
         PoiCategory(0,"Category 1"),
         PoiCategory(0,"Category 1"),
@@ -268,7 +272,7 @@ fun CategoryScreenPreview(){
         PoiCategory(0,"Category 1"),
         PoiCategory(0,"Category 1")
     )
-    MyPOITheme {
+    MyPOITheme (darkTheme = false){
         Scaffold(
             topBar = { MyPoiTopBar() },
             bottomBar = { MyPoiBottomBar(stringResource(id = R.string.poi_categories_title_string)) },

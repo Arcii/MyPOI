@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.myapps.mypoi.R
 import com.myapps.mypoi.database.dao.MyPoiDao
 import com.myapps.mypoi.database.model.PoiCategory
 import com.myapps.mypoi.database.model.PoiLocation
@@ -22,11 +23,12 @@ abstract class MyPoiDatabase: RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     MyPoiDatabase::class.java,
-                    "my_poi_database"
+                    context.getString(R.string.my_poi_db_name)
                 ).addCallback(object : RoomDatabase.Callback() {
                     override fun onCreate(db: SupportSQLiteDatabase) {
                         super.onCreate(db)
                         // Insert default categories
+                        val defaultCategories = getDefaultCategories(context)
                         defaultCategories.forEach { category ->
                             db.execSQL("INSERT INTO categories (name) VALUES (?)", arrayOf(category.name))
                         }
@@ -40,21 +42,23 @@ abstract class MyPoiDatabase: RoomDatabase() {
 
 }
 
-val defaultCategories = listOf(
-    PoiCategory(name = "Parking"),
-    PoiCategory(name = "Restaurants and Dining"),
-    PoiCategory(name = "Shopping and Retail"),
-    PoiCategory(name = "Entertainment and Leisure"),
-    PoiCategory(name = "Parks and Recreation"),
-    PoiCategory(name = "Healthcare"),
-    PoiCategory(name = "Education"),
-    PoiCategory(name = "Financial Services"),
-    PoiCategory(name = "Transportation"),
-    PoiCategory(name = "Accommodation"),
-    PoiCategory(name = "Religious Sites"),
-    PoiCategory(name = "Government and Public Services"),
-    PoiCategory(name = "Utilities and Service Providers"),
-    PoiCategory(name = "Tourist Attractions"),
-    PoiCategory(name = "Sports and Fitness"),
-    PoiCategory(name = "Nightlife")
-)
+fun getDefaultCategories(context: Context): List<PoiCategory> {
+    return listOf(
+        PoiCategory(name = context.getString(R.string.my_poi_db_category_parking)),
+        PoiCategory(name = context.getString(R.string.my_poi_db_category_restaurants)),
+        PoiCategory(name = context.getString(R.string.my_poi_db_category_shop)),
+        PoiCategory(name = context.getString(R.string.my_poi_db_category_entertainment)),
+        PoiCategory(name = context.getString(R.string.my_poi_db_category_parks)),
+        PoiCategory(name = context.getString(R.string.my_poi_db_category_healthcare)),
+        PoiCategory(name = context.getString(R.string.my_poi_db_category_education)),
+        PoiCategory(name = context.getString(R.string.my_poi_db_category_financial)),
+        PoiCategory(name = context.getString(R.string.my_poi_db_category_transportation)),
+        PoiCategory(name = context.getString(R.string.my_poi_db_category_accommodation)),
+        PoiCategory(name = context.getString(R.string.my_poi_db_category_religious_sites)),
+        PoiCategory(name = context.getString(R.string.my_poi_db_category_public_services)),
+        PoiCategory(name = context.getString(R.string.my_poi_db_category_utilities)),
+        PoiCategory(name = context.getString(R.string.my_poi_db_category_tourist_attractions)),
+        PoiCategory(name = context.getString(R.string.my_poi_db_category_sports_fitness)),
+        PoiCategory(name = context.getString(R.string.my_poi_db_category_nightlife))
+    )
+}
